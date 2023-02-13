@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreProjectRequest;
 use App\Http\Requests\Admin\UpdateProjectRequest;
 use App\Models\Project;
+use App\Models\Technology;
 use App\Models\Type;
 use Illuminate\Http\Request;
 
@@ -38,7 +39,10 @@ class ProjectController extends Controller
         // recupero tutti i type
         $types = Type::all();
 
-        return view('admin.projects.create', compact('types'));
+        //recupero tutte le technologies
+        $technologies = Technology::all();
+
+        return view('admin.projects.create', compact('types', 'technologies'));
     }
 
     /**
@@ -60,6 +64,11 @@ class ProjectController extends Controller
             "image" => $img_path ?? '',
             "user_id" => Auth::id()
         ]);
+
+        //controllo se é presente un valore per technologiest
+        if($request->has('technologies')) {
+            $project->technologies()->attach($data["technologies"]);
+        }
 
         return redirect()->route('admin.projects.show', $project->id);
 
@@ -87,7 +96,10 @@ class ProjectController extends Controller
         // recupero tutti i type
         $types = Type::all();
 
-        return view('admin.projects.edit', compact('project', 'types'));
+        //recupero tutte le technologies
+        $technologies = Technology::all();
+
+        return view('admin.projects.edit', compact('project', 'types', 'technologies'));
     }
 
     /**
@@ -113,6 +125,10 @@ class ProjectController extends Controller
             "image" => $img_path ?? $project->image
         ]);
 
+        if($request->has('technologies')) {
+            $project->technologies()->sync($data["technologies"]);
+        }
+
         return redirect()->route('admin.projects.show', $project->id);
     }
 
@@ -127,6 +143,9 @@ class ProjectController extends Controller
         if ($project->image) {
             Storage::delete($project->image);
         }
+
+        //annullo tutte le relazioni
+        $project->technologies()->detach();
         
         $project->delete();
 

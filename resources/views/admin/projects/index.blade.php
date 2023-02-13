@@ -12,7 +12,8 @@
           <th scope="col">Nome</th>
           <th scope="col">Descrizione</th>
           <th scope="col">Tipologia</th>
-          <th scope="col">Immagine</th>
+          <th scope="col">Tecnologia</th>
+          <th scope="col">Img</th>
           <th scope="col">Link GitHub</th>
           <th scope="col">Modifica</th>
           <th scope="col">Elimina</th>
@@ -24,6 +25,7 @@
                 <td><a href="{{route('admin.projects.show', $project->id)}}">{{$project->title}}</a></td>
                 <td>{{Str::limit($project->description, 60)}}</td>
                 <td>{{$project->type ? Str::upper($project->type->name) : '/'}}</td>
+                <td>{{Str::upper($project->technologies->implode('name', ','))}}</td>
                 <td><img src="{{asset('storage/' . $project->image)}}" style="width:50px" alt=""></td>
                 <td><a href="">{{($project->link_github)}}</a></td>
                 <td>

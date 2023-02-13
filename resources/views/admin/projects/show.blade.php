@@ -18,7 +18,7 @@
         
         
         <div class="ms-4">
-            <h3 class="card-title py-4">{{$project->title}}</h3>
+            <h3 class="card-title pb-4">{{$project->title}}</h3>
             <p class="card-text">{{$project->description}}</p>
 
             @if($project->link_github)
@@ -32,8 +32,17 @@
                 </div>
             @endif
 
+            @if($project->technologies)
+                <div class="py-3">
+                    <h6>Tecnologia:</h6>
+                    @foreach ($project->technologies as $tech )
+                        <div class="badge text-bg-danger">{{Str::upper($tech->name)}}</div>
+                    @endforeach
+                </div>
+            @endif
 
-            <div class="mt-5">
+
+            <div class="mt-4">
                 <a href="{{route('admin.projects.edit', $project->id)}}" class="btn btn-outline-primary mb-3">Modifica progetto</a>
     
                 <form action="{{route('admin.projects.destroy', $project->id)}}" method="POST" id="form-delete">

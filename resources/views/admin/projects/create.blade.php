@@ -8,8 +8,8 @@
             <form action="{{route('admin.projects.store')}}" method="POST" enctype="multipart/form-data">
                 @csrf
 
-                <div class="mb-3">
-                    <label class="form-label">Nome Progetto</label>
+                <div class="mb-4">
+                    <label class="form-label h6">Nome Progetto</label>
                     <input type="text" class="form-control @error('title') is-invalid @elseif(old('title')) is-valid @enderror" 
                     name="title" value="{{$errors->has('title') ? '' : old('title')}}">
 
@@ -20,8 +20,8 @@
                     @enderror
                 </div>
 
-                <div class="mb-3">
-                    <label class="form-label">Descrizione</label>
+                <div class="mb-4">
+                    <label class="form-label h6">Descrizione</label>
                     <textarea class="form-control @error('description') is-invalid @elseif(old('description')) is-valid @enderror" name="description"> {{old('description')}}</textarea>
 
                     @error('description')
@@ -31,8 +31,8 @@
                     @enderror
                 </div>
 
-                <div class="mb-3">
-                    <label class="form-label">Tipologia progetto</label>
+                <div class="mb-4">
+                    <label class="form-label h6">Tipologia progetto</label>
                     <select class="form-select" @error('type_id') is-invalid @enderror" name="type_id">
                         <option disabled selected>Open this select menu</option>
                         @foreach ($types as $type)
@@ -51,8 +51,26 @@
                     @enderror
                 </div>
 
-                <div class="mb-3">
-                    <label class="form-label">Immagine</label>
+                <div class="mb-4">
+                    <h6>Tecnolgia</h6>
+                    @foreach($technologies as $tech)
+                        <div class="form-check form-check-inline @error('technologies') is-invalid @enderror">
+                            <input class="form-check-input @error('technologies') is-invalid @enderror" type="checkbox" 
+                                    id="tagCheckbox_{{ $loop->index }}" value="{{ $tech->id }}" name="technologies[]"
+                            {{ in_array( $tech->id, old('technologies', [])) ? 'checked' : ''}}>
+                            <label class="form-check-label" for="tagCheckbox_{{ $loop->index }}">{{ $tech->name }}</label>
+                        </div>
+                    @endforeach
+
+                    @error('technologies')
+                        <div class="invalid-feedback">
+                            {{$message}}
+                        </div>
+                    @enderror
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label h6">Immagine</label>
                     <input type="file" class="form-control @error('image') is-invalid @enderror" name="image">
 
                     @error('image')
@@ -62,8 +80,8 @@
                     @enderror
                 </div>
 
-                <div class="mb-3">
-                    <label class="form-label">Link GitHub</label>
+                <div class="mb-4">
+                    <label class="form-label h6">Link GitHub</label>
                     <input type="text" class="form-control @error('link_github') is-invalid @elseif(old('link_github')) is-valid @enderror" name="link_github"
                     value="{{$errors->has('link_github') ? '' : old('link_github')}}">
 
