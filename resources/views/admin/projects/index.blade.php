@@ -47,6 +47,8 @@
       </tbody>
 </table>
 
+{{$projects->links()}}
+
 <script>
   const formDelete = document.querySelectorAll(".delete-form");
   formDelete.forEach((form) => {
