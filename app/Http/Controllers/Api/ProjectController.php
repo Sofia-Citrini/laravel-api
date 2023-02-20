@@ -8,8 +8,17 @@ use Illuminate\Http\Request;
 
 class ProjectController extends Controller
 {
-    public function index(){
-        $projects = Project::with('type', 'user', 'technologies')->paginate(10);
+    public function index(Request $request){
+        $last4 = $request->input("last4");
+
+        if ($last4){
+            $projects = Project::with('type', 'user', 'technologies')
+                        ->orderBy('created_at', 'DESC')
+                        ->limit(4)
+                        ->get();
+        }else {
+            $projects = Project::with('type', 'user', 'technologies')->get();
+        }
 
         return response()->json($projects);
     }
