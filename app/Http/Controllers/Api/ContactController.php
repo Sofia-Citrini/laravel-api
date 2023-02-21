@@ -18,8 +18,10 @@ class ContactController extends Controller
             'file' => 'nullable|file' 
         ]);
 
-        //se ricevo un ffile in allegato 
-        if ($request->has('file')){
+        // dump($data);
+
+        //se ricevo un file in allegato 
+        if (!is_null($data['file'])){
             //salvo il file e il suo percorso
             $data['file'] = Storage::put('/contacts', $data['file']);
         }
